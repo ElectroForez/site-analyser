@@ -1,0 +1,20 @@
+{
+  "name": "url analyser",
+  "version": "1.0.0",
+  "description": "First task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "nodemon": "nodemon index.js"
+  },
+  "author": "Vlad Tantsev",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "@hapi/hapi": "^20.2.2",
+    "filepaths": "^0.3.0",
+    "jsdom": "^20.0.0",
+    "node-fetch": "^2.6.7"
+  }
+}
