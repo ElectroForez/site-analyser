@@ -21,6 +21,7 @@ const createServer = async () => {
     for (const routeFile of routesFiles) {
         server.route(require(routeFile));
     }
+
     await server.start();
     return server;
 };
