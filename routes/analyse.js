@@ -1,24 +1,7 @@
 const Boom = require("@hapi/boom");
 const fetch = require("node-fetch");
 const { JSDOM } = require("jsdom");
-
-
-function getTextFromNode(node) {
-    const TEXT_NODE = 3;
-    const ELEMENT_NODE = 1;
-
-    if (node.nodeType === TEXT_NODE) {
-        return node.nodeValue + "\n";
-    }
-    else if (node.nodeType === ELEMENT_NODE) {
-        if (!["SCRIPT", "STYLE"].includes(node.tagName)) {
-            return Array.from(node.childNodes).reduce((prev, cur) => {
-                return prev + getTextFromNode(cur);
-            }, "")
-        }
-    }
-    return "";
-}
+const { getTextFromNode } = require("../lib/dom");
 
 async function response(request, h) {
     const urls = request.payload.urls;
@@ -32,6 +15,7 @@ async function response(request, h) {
         if (!response) {
             continue;
         }
+
         if (!response.ok) {
             console.log("bad status code from " + url);
             continue
