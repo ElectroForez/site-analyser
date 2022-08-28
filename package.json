@@ -15,6 +15,7 @@
     "@hapi/hapi": "^20.2.2",
     "filepaths": "^0.3.0",
     "jsdom": "^20.0.0",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "pdfmake": "^0.2.5"
   }
 }
