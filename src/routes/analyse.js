@@ -2,7 +2,11 @@ const Boom = require("@hapi/boom");
 const { UrlAnalyser, generateAnalyseReport } = require("../../lib/urlAnalyse");
 
 async function response(request, h) {
-    const {urls, ignoreRegister = false, wordsCount = 3} = request.payload;
+    const {urls,
+        ignoreRegister = false,
+        wordsCount = 3,
+        minWordLen = 3
+    } = request.payload;
 
     if (!urls) {
         throw Boom.badRequest('urls for urlAnalyse in body not found');
@@ -12,7 +16,7 @@ async function response(request, h) {
         throw Boom.badRequest("urls isn't array");
     }
 
-    const urlAnalyser = new UrlAnalyser({ignoreRegister, wordsCount});
+    const urlAnalyser = new UrlAnalyser({ignoreRegister, wordsCount, minWordLen});
 
     const { results, errors } = await urlAnalyser.analyseUrls(urls);
     const dataTransformer = urlAnalyser.dataTransformer;
