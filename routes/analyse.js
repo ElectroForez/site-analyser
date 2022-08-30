@@ -5,7 +5,7 @@ const PdfWriter = require("../lib/pdf");
 
 async function response(request, h) {
     const urls = request.payload.urls;
-    const ignoreRegister = request.payload.ignoreRegister;
+    const ignoreRegister = request.payload.ignoreRegister || false;
     const results = {};
     const errors = {};
 
