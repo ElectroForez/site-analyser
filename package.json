@@ -2,10 +2,10 @@
   "name": "url analyser",
   "version": "1.0.0",
   "description": "First task",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node index.js",
-    "nodemon": "nodemon index.js"
+    "start": "node src/server.js",
+    "nodemon": "nodemon src/server.js"
   },
   "author": "Vlad Tantsev",
   "license": "ISC",

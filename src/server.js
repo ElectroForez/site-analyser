@@ -2,14 +2,13 @@
 
 const Hapi = require('@hapi/hapi');
 const filepaths = require('filepaths');
+const config = require('../config');
+const path = require("path");
 
 const createServer = async () => {
-    const server = Hapi.server({
-        port: 3000,
-        host: 'localhost'
-    });
+    const server = Hapi.server(config.server);
 
-    const extensionsFiles = filepaths.getSync(__dirname + '/extensions/', {});
+    const extensionsFiles = filepaths.getSync(path.join(__dirname, 'extensions'), {});
     for (const extensionFile of extensionsFiles) {
         const extension = require(extensionFile);
         const events = extension.events;
@@ -17,7 +16,7 @@ const createServer = async () => {
         server.ext(events, method);
     }
 
-    const routesFiles = filepaths.getSync(__dirname + '/routes/', {});
+    const routesFiles = filepaths.getSync(path.join(__dirname, 'routes'), {});
     for (const routeFile of routesFiles) {
         server.route(require(routeFile));
     }
