@@ -1,6 +1,6 @@
 const Boom = require("@hapi/boom");
-const { UrlAnalyser, generateAnalyseReport } = require("../../lib/urlAnalyse");
-const { requestScheme } = require('../schemes/analyse');
+const { UrlAnalyser, generateAnalyseReport } = require("../lib/urlAnalyse");
+const { requestScheme, responseSchemes } = require('../schemes/analyse');
 
 async function response(request, h) {
     const {urls, ...analyseConfig} = request.payload;
@@ -34,6 +34,15 @@ module.exports = {
     handler: response,
     options: {
         validate: requestScheme,
-
+        tags: ['api'],
+        description: 'analyse urls',
+        notes: 'returns pdf file with results',
+        plugins: {
+            'hapi-swagger': {
+                responses: responseSchemes,
+                produces: ['application/pdf', 'application/json']
+            }
+        }
     }
+
 }

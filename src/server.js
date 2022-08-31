@@ -5,8 +5,20 @@ const filepaths = require('filepaths');
 const config = require('../config');
 const path = require("path");
 
+const swaggerOptions = {
+
+}
+
 const createServer = async () => {
     const server = Hapi.server(config.server);
+    await server.register([
+        require('@hapi/inert'),
+        require('@hapi/vision'),
+        {
+            plugin: require('hapi-swagger'),
+
+        }
+    ])
 
     const extensionsFiles = filepaths.getSync(path.join(__dirname, 'extensions'), {});
     for (const extensionFile of extensionsFiles) {
@@ -31,5 +43,4 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
 });
 
-createServer()
-    .then(server => console.log(`Server running on ${server.info.uri}`));
+module.exports = createServer;
