@@ -38,7 +38,7 @@ const responseSchemes = {
             statusCode: Joi.number().integer().example(400),
             error: Joi.string().example("badRequest"),
             message: "'wordsCounts' is not allowed;\n"
-        })
+        }).label('Error response')
     }
 }
 

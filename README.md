@@ -1,11 +1,11 @@
 # url-analyzer
 
+# install
+`npm i`
 # run
 
 ````
-npm i
-
-npm start
+$ npm start
 
 > url analyser@1.0.0 start
 > node src/server.js
@@ -27,3 +27,6 @@ curl --location --request POST 'http://localhost:3000/urlAnalyse' \
 }' \
 --output result.pdf
 ````
+
+# Swagger
+http://localhost:3000/documentation
