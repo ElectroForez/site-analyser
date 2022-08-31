@@ -13,6 +13,7 @@
     "@hapi/boom": "^10.0.0",
     "@hapi/hapi": "^20.2.2",
     "filepaths": "^0.3.0",
+    "joi": "^17.6.0",
     "jsdom": "^20.0.0",
     "node-fetch": "^2.6.7",
     "pdfmake": "^0.2.5"

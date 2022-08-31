@@ -1,22 +1,19 @@
 const Boom = require("@hapi/boom");
 const { UrlAnalyser, generateAnalyseReport } = require("../../lib/urlAnalyse");
+const { requestScheme } = require('../schemes/analyse');
 
 async function response(request, h) {
-    const {urls,
-        ignoreRegister = false,
-        wordsCount = 3,
-        minWordLen = 3
-    } = request.payload;
+    const {urls, ...analyseConfig} = request.payload;
 
-    if (!urls) {
-        throw Boom.badRequest('urls for urlAnalyse in body not found');
-    }
+    // if (!urls) {
+    //     throw Boom.badRequest('urls for urlAnalyse in body not found');
+    // }
+    //
+    // if (!Array.isArray(urls)) {
+    //     throw Boom.badRequest("urls isn't array");
+    // }
 
-    if (!Array.isArray(urls)) {
-        throw Boom.badRequest("urls isn't array");
-    }
-
-    const urlAnalyser = new UrlAnalyser({ignoreRegister, wordsCount, minWordLen});
+    const urlAnalyser = new UrlAnalyser(analyseConfig);
 
     const { results, errors } = await urlAnalyser.analyseUrls(urls);
     const dataTransformer = urlAnalyser.dataTransformer;
@@ -34,5 +31,9 @@ async function response(request, h) {
 module.exports = {
     method: 'POST',
     path: '/urlAnalyse',
-    handler: response
+    handler: response,
+    options: {
+        validate: requestScheme,
+
+    }
 }
