@@ -5,14 +5,6 @@ const { requestScheme, responseSchemes } = require('../schemes/analyse');
 async function response(request, h) {
     const {urls, ...analyseConfig} = request.payload;
 
-    // if (!urls) {
-    //     throw Boom.badRequest('urls for urlAnalyse in body not found');
-    // }
-    //
-    // if (!Array.isArray(urls)) {
-    //     throw Boom.badRequest("urls isn't array");
-    // }
-
     const urlAnalyser = new UrlAnalyser(analyseConfig);
 
     const { results, errors } = await urlAnalyser.analyseUrls(urls);
@@ -20,12 +12,13 @@ async function response(request, h) {
 
     const docBinary = await generateAnalyseReport(results, errors, dataTransformer);
 
-    const filename = 'results.pdf'
+    const attachFilename = 'results.pdf';
+
     return h.response(docBinary)
         .type('application/pdf')
         .header('Connection', 'keep-alive')
         .header('Cache-Control', 'no-cache')
-        .header('Content-Disposition', `attachment;filename=${filename}`);
+        .header('Content-Disposition', `attachment;filename=${attachFilename}`);
 }
 
 module.exports = {
