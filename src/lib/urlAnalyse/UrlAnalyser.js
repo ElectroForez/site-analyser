@@ -2,7 +2,6 @@ const {getTextFromNode} = require('../dom');
 const {getWords} = require('../words');
 const stat = require('../stat');
 const { JSDOM } = require("jsdom");
-const DataTransformer = require("./DataTransformer");
 const fetch = require('node-fetch');
 
 class UrlAnalyser {
@@ -13,54 +12,67 @@ class UrlAnalyser {
             wordsCount: 1,
             ...analyseConfig,
         };
-
-        this.dataTransformer = new DataTransformer(this.analyseConfig);
     }
 
     async analyseUrls(urls) {
-        const results = {};
-        const errors = {};
+        const results = {
+            success: {},
+            errors: {}
+        };
 
         await Promise.allSettled(urls.map(async (url) => {
+            const result = {};
+
             const response = await fetch(url)
                 .catch(error => {
                     switch (error.name) {
                         case 'TypeError':
-                            errors[url] = "Некорректная ссылка";
+                            result.reason = "Некорректная ссылка";
                             break;
                         case 'FetchError':
-                            errors[url] = "Недоступен";
+                            result.reason = "Недоступен";
+                            console.log("AAAA")
                             break;
                         default:
-                            errors[url] = error.toString();
+                            result.reason = error.name;
                     }
                     console.error(error.toString())
                 });
 
-            if (!response) return;
+            if (!response) {
+                result.redirect = null;
+                results.errors[url] = result;
+                return;
+            }
+
+            result.redirect = url === response.url ?
+                null : response.url;
 
             if (!response.ok) {
-                errors[url] = response.statusText;
-                console.error(`${url} - ${errors[url]}`);
-                return
+                result.reason = response.statusText;
+                console.error(`${url} - ${result.reason}`);
+                results.errors[url] = result;
+                return;
             }
 
             const urlContent = await response.text() || "";
             if (this.analyseConfig.ignoreRegister) {
-                results[url] = await this.analyseUrlContent(urlContent.toLowerCase());
+                result.value = await this.analyseHTMLContent(urlContent.toLowerCase());
             } else {
-                results[url] = await this.analyseUrlContent(urlContent);
+                result.value = await this.analyseHTMLContent(urlContent);
             }
-        }))
-        return { results, errors };
+
+            results.success[url] = result;
+        }));
+
+        return results;
     }
 
-    async analyseUrlContent(urlContent) {
-        const { document } = new JSDOM(urlContent).window;
+    async analyseHTMLContent(HTMLContent) {
+        const { document } = new JSDOM(HTMLContent).window;
         const text = getTextFromNode(document.body);
-        const words = getWords(text);
-        const filteredWords = words.filter(word => word.length >= this.analyseConfig.minWordLen);
-        const wordsStat = stat.getCounts(filteredWords);
+        const words = getWords(text, this.analyseConfig.minWordLen);
+        const wordsStat = stat.getCounts(words);
         const sortedWords = Object.entries(wordsStat).sort((a, b) => {
             const countA = a[1];
             const countB = b[1];
@@ -75,7 +87,9 @@ class UrlAnalyser {
             return 0;
         })
             .map(([word, count]) => word);
-        return sortedWords.reverse().slice(0, this.analyseConfig.wordsCount);
+        const result = sortedWords.reverse().slice(0, this.analyseConfig.wordsCount);
+        result.length = this.analyseConfig.wordsCount;
+        return result;
     }
 }
 

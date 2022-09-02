@@ -1,26 +1,27 @@
 const { ReportWriter } = require("../pdf");
+const dataTransform = require("./dataTransform");
 
-async function generateAnalyseReport(results, errors, dataTransformer) {
+async function generateAnalyseReport(results) {
     /* returns binary of pdf file with reports data */
     const reportWriter = new ReportWriter("Словарный анализ сайтов");
 
-    const resultsLen = Object.keys(results).length;
-    const errorsLen = Object.keys(errors).length;
+    const successLen = Object.keys(results.success).length;
+    const errorsLen = Object.keys(results.errors).length;
 
-    if (!(resultsLen || errorsLen)) {
+    if (!(successLen || errorsLen)) {
         reportWriter.appendSubHeader("Нету сайтов для анализа");
     }
 
-    if (resultsLen) {
+    if (successLen) {
         reportWriter.appendContentEl("\n");
         reportWriter.appendSubHeader("Результаты анализа:");
-        reportWriter.appendTable(dataTransformer.resultsToArrayTable(results));
+        reportWriter.appendTable(dataTransform.successToMatrix(results.success));
     }
 
     if (errorsLen) {
         reportWriter.appendContentEl("\n", {repeat: 4});
         reportWriter.appendSubHeader("Ошибки:");
-        reportWriter.appendTable(dataTransformer.errsToArrayTable(errors));
+        reportWriter.appendTable(dataTransform.errsToMatrix(results.errors));
     }
 
     return await reportWriter.getDocBinary();

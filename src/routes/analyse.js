@@ -1,4 +1,3 @@
-const Boom = require("@hapi/boom");
 const { UrlAnalyser, generateAnalyseReport } = require("../lib/urlAnalyse");
 const { requestScheme, responseSchemes } = require('../schemes/analyse');
 
@@ -7,10 +6,9 @@ async function response(request, h) {
 
     const urlAnalyser = new UrlAnalyser(analyseConfig);
 
-    const { results, errors } = await urlAnalyser.analyseUrls(urls);
-    const dataTransformer = urlAnalyser.dataTransformer;
+    const results = await urlAnalyser.analyseUrls(urls);
 
-    const docBinary = await generateAnalyseReport(results, errors, dataTransformer);
+    const docBinary = await generateAnalyseReport(results);
 
     const attachFilename = 'results.pdf';
 

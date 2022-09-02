@@ -1,5 +1,5 @@
 const UrlAnalyser = require('./UrlAnalyser');
-const DataTransformer = require('./DataTransformer');
+const DataTransformer = require('./dataTransform');
 const generateAnalyseReport = require('./generateAnalyseReport');
 
 module.exports = {
