@@ -1,7 +1,7 @@
 const config = require('../config');
 const Package = require('../package');
 
-const swaggerOptions = {
+module.exports = {
     info: {
         title: Package.name + "API Documentation",
         description: Package.description

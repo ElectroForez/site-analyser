@@ -1,22 +1,22 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
+
 const filepaths = require('filepaths');
 const config = require('../config');
 const path = require("path");
-
-const swaggerOptions = {
-
-}
+const swaggerOptions = require('./swaggerOptions');
 
 const createServer = async () => {
     const server = Hapi.server(config.server);
     await server.register([
-        require('@hapi/inert'),
-        require('@hapi/vision'),
+        Inert,
+        Vision,
         {
             plugin: require('hapi-swagger'),
-
+            options: swaggerOptions
         }
     ])
 

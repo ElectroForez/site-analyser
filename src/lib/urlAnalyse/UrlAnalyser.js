@@ -21,7 +21,7 @@ class UrlAnalyser {
         const results = {};
         const errors = {};
 
-        for (const url of urls) {
+        await Promise.allSettled(urls.map(async (url) => {
             const response = await fetch(url)
                 .catch(error => {
                     switch (error.name) {
@@ -37,12 +37,12 @@ class UrlAnalyser {
                     console.error(error.toString())
                 });
 
-            if (!response) continue;
+            if (!response) return;
 
             if (!response.ok) {
                 errors[url] = response.statusText;
                 console.error(`${url} - ${errors[url]}`);
-                continue
+                return
             }
 
             const urlContent = await response.text() || "";
@@ -51,7 +51,7 @@ class UrlAnalyser {
             } else {
                 results[url] = await this.analyseUrlContent(urlContent);
             }
-        }
+        }))
         return { results, errors };
     }
 
