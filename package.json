@@ -1,5 +1,5 @@
 {
-  "name": "url analyser",
+  "name": "site-analyser",
   "version": "1.0.0",
   "description": "First task",
   "main": "src/server.js",

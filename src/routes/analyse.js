@@ -1,12 +1,12 @@
-const { UrlAnalyser, generateAnalyseReport } = require("../lib/urlAnalyse");
-const { requestScheme, responseSchemes } = require('../schemes/analyse');
+const { SiteAnalyser, generateAnalyseReport } = require("../lib/siteAnalyse");
+const { analyse } = require('../schemes');
 
 async function response(request, h) {
     const {urls, ...analyseConfig} = request.payload;
 
-    const urlAnalyser = new UrlAnalyser(analyseConfig);
+    const siteAnalyser = new SiteAnalyser(analyseConfig);
 
-    const results = await urlAnalyser.analyseUrls(urls);
+    const results = await siteAnalyser.analyseFromUrls(urls);
 
     const docBinary = await generateAnalyseReport(results);
 
@@ -21,16 +21,16 @@ async function response(request, h) {
 
 module.exports = {
     method: 'POST',
-    path: '/urlAnalyse',
+    path: '/siteAnalyse',
     handler: response,
     options: {
-        validate: requestScheme,
+        validate: analyse.requestScheme,
         tags: ['api'],
-        description: 'analyse urls',
+        description: 'analyse urls content',
         notes: 'returns pdf file with results',
         plugins: {
             'hapi-swagger': {
-                responses: responseSchemes,
+                responses: analyse.responseSchemes,
                 produces: ['application/pdf', 'application/json']
             }
         }

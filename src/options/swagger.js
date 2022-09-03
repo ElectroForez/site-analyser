@@ -1,5 +1,5 @@
-const config = require('../config');
-const Package = require('../package');
+const config = require('../../config');
+const Package = require('../../package.json');
 
 module.exports = {
     info: {

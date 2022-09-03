@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const Boom = require('@hapi/boom');
-const {badRequest} = require("@hapi/boom");
 
 const requestScheme = {
     payload: Joi.object({
@@ -17,7 +16,7 @@ const requestScheme = {
             .example(["http://yandex.ru", "http://habrahabr.ru"])
             .description('urls for analyse')
     },
-).label('Body urlAnalyse'),
+).label('Body siteAnalyse'),
     failAction: async function (request, h, error) {
         const errorMessage = error.details.map(detail => detail.message + ";\n");
         const strErrorMessage = errorMessage.toString().replaceAll("\"", "'");

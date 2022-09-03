@@ -1,6 +1,6 @@
 const Boom = require('@hapi/boom');
 async function response(request, h) {
-    throw Boom.notFound('OOOPS! Resourse not found');
+    throw Boom.notFound('OOOPS! Resource not found');
 }
 
 module.exports = {

@@ -3,11 +3,13 @@
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
+const hapiSwagger = require('hapi-swagger');
 
 const filepaths = require('filepaths');
-const config = require('../config');
 const path = require("path");
-const swaggerOptions = require('./swaggerOptions');
+
+const config = require('../config');
+const options = require('./options');
 
 const createServer = async () => {
     const server = Hapi.server(config.server);
@@ -15,8 +17,8 @@ const createServer = async () => {
         Inert,
         Vision,
         {
-            plugin: require('hapi-swagger'),
-            options: swaggerOptions
+            plugin: hapiSwagger,
+            options: options.swagger
         }
     ])
 

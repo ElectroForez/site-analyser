@@ -116,5 +116,6 @@ function errsToMatrix(errResults, options = {}) {
 
 module.exports = {
     successToMatrix,
-    errsToMatrix
+    errsToMatrix,
+    COLUMNS
 };

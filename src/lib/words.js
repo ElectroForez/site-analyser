@@ -3,6 +3,7 @@ function getWords(str, minWordLen=1) {
     if (typeof minWordLen !== "number" || minWordLen < 0) {
         throw new Error(`Invalid minimal word length: ${minWordLen}`);
     }
+
     const wordRe = new RegExp(`[A-ZА-Я]{${minWordLen},}`, 'i');
     return str.split(/\s+/)
         .filter(value => value.match(wordRe))

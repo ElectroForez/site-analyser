@@ -4,8 +4,9 @@ const stat = require('../stat');
 const { JSDOM } = require("jsdom");
 const fetch = require('node-fetch');
 
-class UrlAnalyser {
+class SiteAnalyser {
     constructor(analyseConfig) {
+        //params by default
         this.analyseConfig = {
             ignoreRegister: false,
             minWordLen: 1,
@@ -14,7 +15,7 @@ class UrlAnalyser {
         };
     }
 
-    async analyseUrls(urls) {
+    async analyseFromUrls(urls) {
         const results = {
             success: {},
             errors: {}
@@ -31,7 +32,6 @@ class UrlAnalyser {
                             break;
                         case 'FetchError':
                             result.reason = "Недоступен";
-                            console.log("AAAA")
                             break;
                         default:
                             result.reason = error.name;
@@ -93,4 +93,4 @@ class UrlAnalyser {
     }
 }
 
-module.exports = UrlAnalyser;
+module.exports = SiteAnalyser;
