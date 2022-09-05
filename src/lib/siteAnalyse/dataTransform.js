@@ -25,12 +25,12 @@ function addColumn(matrix, col) {
     matrix.forEach((row, i) => row.push(col[i]));
 }
 
-function resultsToMatrix(results, {includedColumns = [], addAction = (header, body, colName) => null}) {
+function resultsToMatrix(results, {includeColumns = [], addAction = (header, body, colName) => null}) {
     const header = [];
     const body = [];
 
-    includedColumns.forEach((columnName) => {
-        if (!(columnName in COLUMNS)) throw new Error('Invalid column for include');
+    includeColumns.forEach((columnName) => {
+        if (!(columnName in COLUMNS)) throw new Error(`Invalid column '${columnName}' for include`);
 
         const columnTitle = COLUMNS[columnName].title;
         if (columnTitle !== null) header.push(columnTitle);
@@ -57,13 +57,14 @@ function resultsToMatrix(results, {includedColumns = [], addAction = (header, bo
 
 function successToMatrix(sucResults, options = {}) {
     options = {
-        includedColumns: [
+        includeColumns: [
             COLUMNS.url.name,
             COLUMNS.values.name,
             COLUMNS.redirect.name
         ],
         ...options
     }
+
     const sucAction = (header, body, columnName) => {
         switch (columnName) {
             case COLUMNS.values.name:
@@ -78,19 +79,19 @@ function successToMatrix(sucResults, options = {}) {
                 values.forEach((value, index) => body[index].push(...value));
                 break;
             default:
-                throw new Error(`No handler for column ${columnName}`);
+                throw new Error(`Column '${columnName}' is not defined for success data`);
         }
     };
 
     return resultsToMatrix(sucResults, {
-        includedColumns: options.includedColumns,
+        includeColumns: options.includeColumns,
         addAction: sucAction
     });
 }
 
 function errsToMatrix(errResults, options = {}) {
     options = {
-        includedColumns: [
+        includeColumns: [
             COLUMNS.url.name,
             COLUMNS.error.name,
             COLUMNS.redirect.name
@@ -104,12 +105,12 @@ function errsToMatrix(errResults, options = {}) {
                 addColumn(body, errors);
                 break;
             default:
-                throw new Error(`No handler for column ${columnName}`);
+                throw new Error(`Column '${columnName}' is not defined for errors data`);
         }
     };
 
     return resultsToMatrix(errResults, {
-        includedColumns: options.includedColumns,
+        includeColumns: options.includeColumns,
         addAction: errAction
     });
 }

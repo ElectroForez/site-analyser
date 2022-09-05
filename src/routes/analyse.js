@@ -1,14 +1,16 @@
 const { SiteAnalyser, generateAnalyseReport } = require("../lib/siteAnalyse");
 const { analyse } = require('../schemes');
+const Boom = require("@hapi/boom");
 
 async function response(request, h) {
-    const {urls, ...analyseConfig} = request.payload;
+    const {urls, pdf, analyse} = request.payload;
 
-    const siteAnalyser = new SiteAnalyser(analyseConfig);
+    const siteAnalyser = new SiteAnalyser(analyse);
 
     const results = await siteAnalyser.analyseFromUrls(urls);
 
-    const docBinary = await generateAnalyseReport(results);
+    const docBinary = await generateAnalyseReport(results, pdf)
+        .catch(error => {throw Boom.badRequest(error.toString())});
 
     const attachFilename = 'results.pdf';
 

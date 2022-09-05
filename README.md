@@ -30,15 +30,37 @@ Server running on http://localhost:3000
 
 ## Example of usage
 
+Simple usage
+````
+curl --location --request POST 'http://localhost:3000/siteAnalyse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "urls": ["http://yandex.ru", "http://habrahabr.ru", "http://not-exists.site"]
+}
+' \
+--output result.pdf
+````
+More flexible usage
 ````
 curl --location --request POST 'http://localhost:3000/siteAnalyse' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "urls": ["http://yandex.ru", "http://habrahabr.ru"],
-    "ignoreRegisters": true,
-    "wordsCount": 3,
-    "minWordLen": 5
-}' \
+    "analyse": {
+        "wordsCount": 4,
+        "ignoreRegister": true,
+        "minWordLen": 4
+    },
+    "pdf": {
+        "success": {
+            "includeColumns": ["url", "values", "redirect"]
+        },
+        "errors": {
+            "includeColumns": ["url", "error"]
+        }
+    }
+}
+' \
 --output result.pdf
 ````
 
