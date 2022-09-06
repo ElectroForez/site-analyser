@@ -13,6 +13,7 @@ http://yandex.ru
 ## Install
 ````
 git clone https://github.com/ElectroForez/site-analyser.git
+cd site-analyser
 npm install
 ````
 
