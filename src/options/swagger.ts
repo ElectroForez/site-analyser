@@ -1,16 +1,12 @@
 import {RegisterOptions} from "hapi-swagger";
 
-const config = require('../../config');
+import {config} from "../../config";
 
-const Package = {
-    title: process.env.npm_package_title || "",
-    description: process.env.npm_package_description || "",
-    version: process.env.npm_package_version || ""
-}
+const Package = require('../../package.json');
 
 export const swagger: RegisterOptions = {
     info: {
-        title: Package.title + " API Documentation",
+        title: Package.name + " API Documentation",
         description: Package.description,
         version: Package.version
     },

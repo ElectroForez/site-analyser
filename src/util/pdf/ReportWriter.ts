@@ -30,12 +30,14 @@ export default class ReportWriter {
     }
 
     setContentEl(contentEl: any, pos: number) {
+        //because TDocDefiniton not provides interface for change content
         // @ts-ignore
         this.docDefinition.content[pos] = contentEl;
     }
 
     appendContentEl(contentEl:any, options={repeat:1}) {
         for (let i=0; i < options.repeat; i++) {
+            //because TDocDefiniton not provides interface for change content
             // @ts-ignore
             this.docDefinition.content.push(deepClone(contentEl));
         }

@@ -26,15 +26,12 @@ export const createServer = async () => {
 
     await server.register(plugins);
 
-    // const extensionsFiles = filepaths.getSync(path.join(__dirname, 'extensions'), {});
-    // for (const extensionFile of extensionsFiles) {
-    //     const extension = require(extensionFile);
-    //     const events = extension.events;
-    //     const method = extension.method;
-    //     server.ext(events, method);
-    // }
+    const extensionsFiles = glob.sync('./extensions/*.ts', {cwd: __dirname});
+    for (const extensionFile of extensionsFiles) {
+        const { extension } = await import(extensionFile);
+        server.ext(extension);
+    }
 
-    // const routesFiles = filepaths.getSync(path.join(__dirname, 'routes'), {});
     const routesFiles = glob.sync('./routes/*.ts', {cwd: __dirname});
     for (const routeFile of routesFiles) {
         const { route } = await import(routeFile);
