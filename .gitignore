@@ -3,3 +3,4 @@ documents/
 node_modules/
 test.js
 test.ts
+lib/
