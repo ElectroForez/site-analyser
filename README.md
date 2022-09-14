@@ -69,3 +69,7 @@ curl --location --request POST 'http://localhost:3000/siteAnalyse' \
 After run, swagger is available on:
 
 http://localhost:3000/documentation
+
+## Node.js version
+Проект был изначально написан на Node.js, впоследствии был перенесён на TS.
+С ней можно ознакомиться [здесь](https://github.com/ElectroForez/site-analyser/tree/nodejs-version)
