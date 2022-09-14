@@ -1,7 +1,7 @@
 export const config = {
     server: {
-        port: 3000,
-        host: 'localhost'
+        port: process.env.API_PORT || 3000,
+        host: process.env.API_HOST || 'localhost'
     },
-    swaggerHost: 'localhost'
+    swaggerHost: process.env.SWAGGER_HOST || 'localhost'
 }

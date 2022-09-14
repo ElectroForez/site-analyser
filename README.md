@@ -20,15 +20,12 @@ npm install
 ## Run
 
 ````
-$ npm start
-
-> site-analyser@1.0.0 start
-> node main.js
-
-Server running on http://localhost:3000
-
+npm start
 ````
-
+or docker-compose
+```
+docker-compose up
+```
 ## Example of usage
 
 Simple usage
